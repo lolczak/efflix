@@ -15,20 +15,16 @@ import scala.concurrent.duration.FiniteDuration
 object ZioSync extends Sync[ZIO[ZEnv, +*, +*]] {
 
   /** @inheritdoc **/
-  override def effect[A](effect: => A): ZIO[ZEnv, Nothing, A] =
-    ZIO.effectTotal(effect)
+  override def effect[A](effect: => A): ZIO[ZEnv, Nothing, A] = ZIO.effectTotal(effect)
 
   /** @inheritdoc **/
-  override def blockingOp[A](effect: => A): ZIO[ZEnv, Throwable, A] =
-    blocking.effectBlocking(effect)
+  override def blockingOp[A](effect: => A): ZIO[ZEnv, Throwable, A] = blocking.effectBlocking(effect)
 
   /** @inheritdoc **/
-  override def blockingIO[A](effect: => A): ZIO[ZEnv, IOException, A] =
-    blocking.effectBlockingIO(effect)
+  override def blockingIO[A](effect: => A): ZIO[ZEnv, IOException, A] = blocking.effectBlockingIO(effect)
 
   /** @inheritdoc **/
-  override def timeoutFail[E, E1 >: E, A](fa: ZIO[ZEnv, E, A])(e: E1)(
-    timeout: FiniteDuration
-  ): ZIO[zio.ZEnv, E1, A] = fa.timeoutFail(e)(Duration.fromScala(timeout))
+  override def timeoutFail[E, E1 >: E, A](fa: ZIO[ZEnv, E, A])(e: E1)(timeout: FiniteDuration): ZIO[zio.ZEnv, E1, A] =
+    fa.timeoutFail(e)(Duration.fromScala(timeout))
 
 }

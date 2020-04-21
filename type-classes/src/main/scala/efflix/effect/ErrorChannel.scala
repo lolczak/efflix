@@ -16,9 +16,7 @@ trait ErrorChannel[F[+_, +_]] {
     * @param recovery a recovery function
     * @return
     */
-  def recover[E, A, B >: A](fa: F[E, A])(
-    recovery: PartialFunction[E, B]
-  ): F[E, B]
+  def recover[E, A, B >: A](fa: F[E, A])(recovery: PartialFunction[E, B]): F[E, B]
 
   /**
     * Recover from error by executing effectful computation.
@@ -27,9 +25,7 @@ trait ErrorChannel[F[+_, +_]] {
     * @param recovery a recovery function
     * @return
     */
-  def recoverWith[E, A, B >: A, E1 >: E](fa: F[E, A])(
-    recovery: PartialFunction[E, F[E1, B]]
-  ): F[E1, B]
+  def recoverWith[E, A, B >: A, E1 >: E](fa: F[E, A])(recovery: PartialFunction[E, F[E1, B]]): F[E1, B]
 
   /**
     * Lifts either to the [[F]] monadic context
@@ -46,9 +42,7 @@ trait ErrorChannel[F[+_, +_]] {
     * @param f a mapping function
     * @return
     */
-  def mapError[E, A, E1](fa: F[E, A])(f: E => E1)(
-    implicit ev: E =:!= Nothing
-  ): F[E1, A]
+  def mapError[E, A, E1](fa: F[E, A])(f: E => E1)(implicit ev: E =:!= Nothing): F[E1, A]
 
   /**
     * Returns an effect that models failure with the specified error.
@@ -65,9 +59,7 @@ trait ErrorChannel[F[+_, +_]] {
     * @param cleanUp a cleanup function
     * @return
     */
-  def onError[E, A](fa: F[E, A])(
-    cleanUp: PartialFunction[E, F[Nothing, Unit]]
-  ): F[E, A]
+  def onError[E, A](fa: F[E, A])(cleanUp: PartialFunction[E, F[Nothing, Unit]]): F[E, A]
 
   /**
     * Runs `cleanUp` effect if effectful computation died due to exception.
@@ -76,15 +68,12 @@ trait ErrorChannel[F[+_, +_]] {
     * @param cleanUp a cleanup function
     * @return
     */
-  def onDie[E, A](fa: F[E, A])(
-    cleanUp: PartialFunction[Throwable, F[Nothing, Unit]]
-  ): F[E, A]
+  def onDie[E, A](fa: F[E, A])(cleanUp: PartialFunction[Throwable, F[Nothing, Unit]]): F[E, A]
 
 }
 
 object ErrorChannel {
 
-  def apply[F[+_, +_]](implicit except: ErrorChannel[F]): ErrorChannel[F] =
-    except
+  def apply[F[+_, +_]](implicit except: ErrorChannel[F]): ErrorChannel[F] = except
 
 }

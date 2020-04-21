@@ -11,18 +11,14 @@ import scala.util.{Failure, Success}
   */
 class ZioAsync[R] extends Async[ZIO[R, +*, +*]] {
 
-  implicit private val immediateEc =
-    ExecutionContext.fromExecutor(ImmediateExecutor)
+  implicit private val immediateEc = ExecutionContext.fromExecutor(ImmediateExecutor)
 
   /** @inheritdoc **/
-  override def async[E, A](
-    register: (Either[E, A] => Unit) => Unit
-  ): ZIO[R, E, A] =
+  override def async[E, A](register: (Either[E, A] => Unit) => Unit): ZIO[R, E, A] =
     ZIO.effectAsync[R, E, A] { callback =>
       register { result =>
         callback(ZIO.fromEither(result))
       }
-
     }
 
   /** @inheritdoc **/

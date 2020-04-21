@@ -12,19 +12,15 @@ import efflix.effect.syntax._
   * @param permits
   * @tparam F a monadic context
   */
-class JvmSemaphore[F[+_, +_]: Sync: ErrorChannel: CovariantFlatMap](
-  permits: Int
-) extends Semaphore[F] {
+class JvmSemaphore[F[+_, +_]: Sync: ErrorChannel: CovariantFlatMap](permits: Int) extends Semaphore[F] {
 
   private val semaphore = new concurrent.Semaphore(permits, true)
 
   /** @inheritdoc **/
-  override def acquire(): F[Nothing, Unit] =
-    Sync[F].effect(semaphore.acquire())
+  override def acquire(): F[Nothing, Unit] = Sync[F].effect(semaphore.acquire())
 
   /** @inheritdoc **/
-  override def release(): F[Nothing, Unit] =
-    Sync[F].effect(semaphore.release())
+  override def release(): F[Nothing, Unit] = Sync[F].effect(semaphore.release())
 
   /** @inheritdoc **/
   override def withPermit[E, A](criticalSection: F[E, A]): F[E, A] =
