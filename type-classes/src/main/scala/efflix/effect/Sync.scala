@@ -2,8 +2,6 @@ package efflix.effect
 
 import java.io.IOException
 
-import scala.concurrent.duration.FiniteDuration
-
 /**
   * A class for synchronous effects that block threads.
   *
@@ -34,18 +32,6 @@ trait Sync[F[+_, +_]] {
     * @return
     */
   def blockingIO[A](effect: => A): F[IOException, A]
-
-  /**
-    * Returns an effect that will timeout `fa` effect.
-    *
-    * @param fa an effectful computation
-    * @param e a timeout error
-    * @param timeout a timeout
-    * @return
-    */
-  def timeoutFail[E, E1 >: E, A](fa: F[E, A])(e: E1)(
-    timeout: FiniteDuration
-  ): F[E1, A]
 
 }
 

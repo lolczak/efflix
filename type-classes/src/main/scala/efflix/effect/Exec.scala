@@ -19,6 +19,8 @@ trait Exec[F[_, _]] {
     */
   def exec[E, A](op: F[E, A]): Future[Either[E, A]]
 
+  def execSync[E, A](op: F[E, A]): Either[E, A]
+
 }
 
 object Exec {

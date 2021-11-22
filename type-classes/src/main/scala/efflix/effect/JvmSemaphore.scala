@@ -2,7 +2,7 @@ package efflix.effect
 
 import java.util.concurrent
 
-import efflix.core.CovariantFlatMap
+import efflix.core.Monad
 import efflix.core.syntax._
 import efflix.effect.syntax._
 
@@ -12,7 +12,7 @@ import efflix.effect.syntax._
   * @param permits
   * @tparam F a monadic context
   */
-class JvmSemaphore[F[+_, +_]: Sync: ErrorChannel: CovariantFlatMap](permits: Int) extends Semaphore[F] {
+class JvmSemaphore[F[+_, +_]: Sync: MonadError: Monad](permits: Int) extends Semaphore[F] {
 
   private val semaphore = new concurrent.Semaphore(permits, true)
 

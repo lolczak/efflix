@@ -1,6 +1,6 @@
 package efflix.effect
 
-import efflix.core.CovariantFlatMap
+import efflix.core.Monad
 
 /**
   * A pure functional semaphore.
@@ -37,7 +37,7 @@ trait Semaphore[F[+_, +_]] {
 
 object Semaphore {
 
-  def unsafeMake[F[+_, +_]: Sync: ErrorChannel: CovariantFlatMap](permits: Int): Semaphore[F] =
+  def unsafeMake[F[+_, +_]: Sync: MonadError: Monad](permits: Int): Semaphore[F] =
     new JvmSemaphore(permits)
 
 }
